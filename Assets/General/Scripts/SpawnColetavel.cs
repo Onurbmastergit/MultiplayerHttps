@@ -12,11 +12,11 @@ public class SpawnColetavel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("SpawnarMoeda", 5 , spawnInterval);
-
+        //Invoca Repetidamente uma função(função , tempo inicial , tempo que vai spwanar)
+        //InvokeRepeating("SpawnarMoeda", 5 , spawnInterval);
     }
 
-    void SpawnarMoeda() 
+    public void SpawnarMoeda() 
     {
 
         float areaX = spawnColetavel.localScale.x / 2;
@@ -27,7 +27,9 @@ public class SpawnColetavel : MonoBehaviour
 
         Vector3 localSpawn = new Vector3 (randomX, 1f ,randomZ);
 
-       Transform instacia = Instantiate(prefabColetavel , transform );
+        Transform instacia = Instantiate(prefabColetavel , transform );
         instacia.position = localSpawn;
+        
+        Invoke("SpawnarMoeda", spawnInterval);
     }
 }

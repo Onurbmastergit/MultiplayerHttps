@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Coins
+  - Spawn
   layers:
   - Default
   - TransparentFX

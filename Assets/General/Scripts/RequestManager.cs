@@ -33,6 +33,9 @@ public class RequestManager : MonoBehaviour
         }
         List<Usuario> usuarios = JsonConvert.DeserializeObject<List<Usuario>>(response);
         Debug.Log($"{usuarios[0].name}");
+
+        HudManager.instacia.LoadingTime();
+        
         return usuarios[0];
 
     }
@@ -47,6 +50,7 @@ public class RequestManager : MonoBehaviour
         UnityWebRequest request = UnityWebRequest.Post(requestUrl, json, "application/json");
         await request.SendWebRequest();
 
+        HudManager.instacia.LoadingTime();
         return await BuscaUsuario(name);
 
     }
