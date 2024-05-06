@@ -5,12 +5,15 @@ using UnityEngine.Networking;
 using System.Threading.Tasks;
 using Newtonsoft;
 using Newtonsoft.Json;
+using TMPro;
 
 public class RequestManager : MonoBehaviour
 {
     static string apiUrl = "https://udbivwcnyultcnelilpl.supabase.co/rest/v1/usuarios";
     static string apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVkYml2d2NueXVsdGNuZWxpbHBsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTIzNDcwMzMsImV4cCI6MjAyNzkyMzAzM30.sA3IglUsaastSDRPspXy_EeDo0e2cOaV1Wno_08lYE0";
-    
+    public Transform placeTransform;
+    public Transform prefabText;
+
     //Buscar um usu�rio pelo nome
     public static async Task<Usuario> BuscaUsuario(string name) 
     {
@@ -29,7 +32,6 @@ public class RequestManager : MonoBehaviour
         Debug.Log($"{usuarios[0].name}");
 
         HudManager.instacia.LoadingTime();
-        
         return usuarios[0];
 
     }
@@ -62,7 +64,7 @@ public class RequestManager : MonoBehaviour
         await request.SendWebRequest();
 
     } 
-    public static async void RankUsuarios()
+    public async void RankUsuarios()
     {
         string requestUrl = $"{apiUrl}?points=gt.0&order=points.desc&apikey={apiKey}";
 
@@ -75,13 +77,17 @@ public class RequestManager : MonoBehaviour
             return ;
         }
         List<Usuario> usuarios = JsonConvert.DeserializeObject<List<Usuario>>(response);
-
-        for(int i = 0; i < usuarios.Count;i++)
+          for(int i = 0; i < usuarios.Count;i++)
         {  
-               
+         string ranked = $"{i+1}° {usuarios[i].name}:{usuarios[i].points}";
+         prefabText.GetComponent<TextMeshProUGUI>().text = ranked;
+         Instantiate(prefabText,placeTransform);
+                 
         }
+
         Debug.Log(usuarios[0].name);
     }
+   
    
     
 

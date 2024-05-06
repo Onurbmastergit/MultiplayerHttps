@@ -6,6 +6,12 @@ using UnityEngine;
 public class HudController : MonoBehaviour
 {
     public TMP_InputField inputNome;
+    public RequestManager requestManager;
+
+    void Start()
+    {
+    requestManager = GameObject.FindWithTag("Network").GetComponent<RequestManager>();
+    }
     public async void BotaoEntrar()
     {
         HudManager.instacia.LoadingTime();
@@ -19,8 +25,8 @@ public class HudController : MonoBehaviour
         ToastNotification.Show("Olá, "+usuario.name+", bem-vindo de volta!");
         
         GameManager.usuarioLogado = usuario;
+        requestManager.RankUsuarios();
         HudManager.instacia.AlteraPontosNaTela(GameManager.usuarioLogado.points);
-        RequestManager.RankUsuarios();
         HudManager.instacia.DisableHud();
         PlayerSpawner.instacia.SpawnPlayer();
         GameObject.FindWithTag("Spawn").GetComponent<SpawnColetavel>().SpawnarMoeda();    
