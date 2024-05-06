@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Coins
   - Spawn
+  - ScreenScore
   layers:
   - Default
   - TransparentFX

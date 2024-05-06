@@ -5,13 +5,7 @@ using UnityEngine.Networking;
 using System.Threading.Tasks;
 using Newtonsoft;
 using Newtonsoft.Json;
-public class Usuario
-{
-    public int id;
-    public string name;
-    public int points;
-    public string created_at;
-}
+
 public class RequestManager : MonoBehaviour
 {
     static string apiUrl = "https://udbivwcnyultcnelilpl.supabase.co/rest/v1/usuarios";
@@ -39,6 +33,7 @@ public class RequestManager : MonoBehaviour
         return usuarios[0];
 
     }
+     //Criar novo usu�rio
     public static async Task<Usuario> CriarUsuario(string name)
     {
 
@@ -54,8 +49,40 @@ public class RequestManager : MonoBehaviour
         return await BuscaUsuario(name);
 
     }
-    //Criar novo usu�rio
+    //Atualiza pontos buscando pelo id do usuário
+    public static async void AlteraPontos(int id , int pontos)
+    {
+        string json = "{\"points\":"+pontos+"}";
+        string requestUrl = $"{apiUrl}?id=eq.{id}&apikey={apiKey}";
 
+        UnityWebRequest request = UnityWebRequest.Put(requestUrl, json);
+        request.SetRequestHeader("Content-Type","application/json");
+        request.method ="PATCH";
+
+        await request.SendWebRequest();
+
+    } 
+    public static async void RankUsuarios()
+    {
+        string requestUrl = $"{apiUrl}?points=gt.0&order=points.desc&apikey={apiKey}";
+
+        UnityWebRequest request = UnityWebRequest.Get(requestUrl);
+        await request.SendWebRequest();
+
+         string response = request.downloadHandler.text;
+        if(response == "[]")
+        {
+            return ;
+        }
+        List<Usuario> usuarios = JsonConvert.DeserializeObject<List<Usuario>>(response);
+
+        for(int i = 0; i < usuarios.Count;i++)
+        {  
+               
+        }
+        Debug.Log(usuarios[0].name);
+    }
+   
     
 
 }

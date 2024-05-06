@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,7 @@ public class HudManager : MonoBehaviour
 
    public  GameObject Hud;
    public GameObject HudPlayer;
+   public TextMeshProUGUI pontosTela;
    public float velocity =  5;
    
    public UnityEngine.UI.Image Timer;
@@ -17,6 +19,10 @@ public class HudManager : MonoBehaviour
    void Awake()
    {
      instacia = this;
+   }
+   void Start()
+   {
+    pontosTela = GameObject.FindWithTag("ScreenScore").GetComponent<TextMeshProUGUI>();
    }
 
     public void LoadingTime()
@@ -30,6 +36,10 @@ public class HudManager : MonoBehaviour
     {
         HudPlayer.GetComponent<Canvas>().enabled = true;
         Hud.SetActive(false);
+    }
+    public void AlteraPontosNaTela(int pontos)
+    {
+        pontosTela.text = pontos.ToString();
     }
 
 }

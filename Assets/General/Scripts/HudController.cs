@@ -6,10 +6,8 @@ using UnityEngine;
 public class HudController : MonoBehaviour
 {
     public TMP_InputField inputNome;
-
     public async void BotaoEntrar()
     {
-
         HudManager.instacia.LoadingTime();
 
         Usuario usuario = await RequestManager.BuscaUsuario(inputNome.text);
@@ -18,13 +16,20 @@ public class HudController : MonoBehaviour
             usuario = await RequestManager.CriarUsuario(inputNome.text);
         }
         
-        //Player já esta logado
+        ToastNotification.Show("Olá, "+usuario.name+", bem-vindo de volta!");
+        
+        GameManager.usuarioLogado = usuario;
+        HudManager.instacia.AlteraPontosNaTela(GameManager.usuarioLogado.points);
+        RequestManager.RankUsuarios();
         HudManager.instacia.DisableHud();
         PlayerSpawner.instacia.SpawnPlayer();
-        GameObject.FindWithTag("Spawn").GetComponent<SpawnColetavel>().SpawnarMoeda();
-       
-        
-
-
+        GameObject.FindWithTag("Spawn").GetComponent<SpawnColetavel>().SpawnarMoeda();    
     }
+
+    void Update(){
+        if(Input.GetKeyDown(KeyCode.Return)){
+            BotaoEntrar();
+        }
+    }
+    
 }
